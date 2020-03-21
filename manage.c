@@ -23,7 +23,11 @@ int allocate_pid(){
         }
         else
         {
-            
+         i++;   
+        }
+        if(i==max_size-1){
+            printf("No available PID");
+            return 1;
         }
     }
 }
