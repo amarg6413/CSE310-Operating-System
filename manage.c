@@ -31,6 +31,19 @@ int allocate_pid(){
         }
     }
 }
+
+void release_pid(int pid){
+    if(pid<1000 &&pid>=100)
+    {
+        printf("Releasing PID");
+        bitmap[pid-MIN_PID]==0;
+        printf("Released PID %d",&pid);
+    }else
+    {
+        printf("Invalid PID");
+    }
+    
+}
 int main(){
 
 
