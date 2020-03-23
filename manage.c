@@ -35,9 +35,9 @@ int allocate_pid(){
 void release_pid(int pid){
     if(pid<1000 &&pid>=100)
     {
-        printf("Releasing PID");
+        printf("Releasing PID\n");
         map[pid-MIN_PID]==0;
-        printf("Released PID %d",pid);
+        printf("Released PID %d\n",pid);
     }else
     {
         printf("Invalid PID");
@@ -46,12 +46,12 @@ void release_pid(int pid){
 }
 
 void *ThreadFun(void *threadid) {
-    sleep(1);
-    int tid;
-    tid = allocate_pid();
-    printf("Hello World! Thread ID, %d\n", tid);
-    release_pid(tid);
-    pthread_exit(NULL);
+    int tid,pid;
+    tid=*((int *)threadid);
+    pid = allocate_pid();
+    printf("Hello World! Thread ID, %d of PID %d\n", tid,pid);
+    sleep(5);
+    release_pid(pid);
 }
 int main () {
     int a=allocate_map();
@@ -59,16 +59,17 @@ int main () {
     int n;
     scanf("%d",&n);
     pthread_t threads[n];
+    //srand(time(NULL));
     int i;
     for( i = 0; i < n; i++ ) {
-          pthread_create(&threads[i], NULL, ThreadFun,NULL);
-          pthread_join(threads[i],NULL);
+          pthread_create(&threads[i], NULL, ThreadFun,(void*)&i);
+          //pthread_join(threads[i],NULL);
    }
 
     for(i=0; i<n; i++)
         pthread_join(threads[i],NULL);
 
-        printf("Hello after");
-        pthread_exit(release_pid);
+        //printf("Hello after");
+        //pthread_exit(release_pid);
 
 }
