@@ -1,5 +1,7 @@
+#include<sys/wait.h>
 #include<unistd.h>
 #include<stdio.h>
+#include<stdlib.h>
 #include<pthread.h>
 #define MAX_PID 1000
 #define MIN_PID 100
@@ -49,13 +51,24 @@ void *ThreadFun(void *threadid) {
     int tid,pid;
     tid=*((int *)threadid);
     pid = allocate_pid();
-    printf("Thread ID, %d of PID %d\n", tid,pid);
-    sleep(1);
+    if(pid==1){
+    printf("Exiting Program because no PID available");
+    exit(0);
+    }
+    else
+    {
+    int n = rand() % 31 + 1;
+    printf("Thread ID, %d of PID %d created and sleeping for %d sec\n", tid,pid,n);
+    sleep(n);
+    printf("Thread ID, %d of PID %d released in %d seconds\n", tid,pid,n);
     release_pid(pid);
     pthread_exit(NULL);
+    }
 }
 int main () {
     int a=allocate_map();
+    if(a==1)
+    {
     printf("Enter the no of threads you want:-");
     int n;
     scanf("%d",&n);
@@ -68,4 +81,21 @@ int main () {
         }
     for(i=0; i<n; i++)
         pthread_join(threads[i],NULL);    
+    //uncomment these lines to create new same no process to check that it is reallocating the pid or not
+    /***
+    for( i = 0; i < n; i++ ) {
+        printf("Creating Process %d\n",i);
+        pthread_create(&threads[i], NULL, ThreadFun,(void*)&i);
+        
+        }
+    for(i=0; i<n; i++)
+        pthread_join(threads[i],NULL);
+    }
+    ***/
+    else
+    {
+        printf("Error while allocating the map");
+    }
+    
+
 }
