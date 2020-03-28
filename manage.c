@@ -11,12 +11,12 @@ int map[900]={0};
 
 
 int allocate_map(){
-    printf("Started marking every bitmap free");
+    printf("Started marking every bitmap free\n");
     int i=0;
     while(i<max_size){
         map[i++]=0;//mark everyone as zero
     }
-    printf("Successfully marked");
+    printf("Successfully marked\n");
     return 1;
 }
 
@@ -33,7 +33,7 @@ int allocate_pid(){
          i++;   
         }
         if(i==max_size-1){
-            printf("No available PID");
+            printf("No available PID\n");
             return 1;
         }
     }
@@ -48,7 +48,7 @@ void release_pid(int pid){
         printf("Released PID %d\n",pid);
     }else
     {
-        printf("Invalid PID");
+        printf("Invalid PID\n");
     }
     
 }
@@ -59,7 +59,7 @@ void *ThreadFun(void *threadid) {
     tid=*((int *)threadid);
     pid = allocate_pid();
     if(pid==1){
-    printf("Exiting Program because no PID available");
+    printf("Exiting Program because no PID available\n");
     exit(0);
     }
     else
@@ -78,7 +78,7 @@ int main () {
     int a=allocate_map();
     if(a==1)
     {
-    printf("Enter the no of processes you want:-");
+    printf("Enter the no of processes you want:-\n");
     int n;
     scanf("%d",&n);
     pthread_t threads[n];
@@ -87,9 +87,12 @@ int main () {
         pthread_create(&threads[i], NULL, ThreadFun,(void*)&i);//creating the threads 
         }
     for(i=0; i<n; i++)
-        pthread_join(threads[i],NULL);    
-    //uncomment these lines to create new same no process to check that it is reallocating the pid or not
-    /***
+        pthread_join(threads[i],NULL);   
+    printf("Want to allocate again if yes press 1 else 0:\n");
+    int b=0;;
+    scanf("%d",&b); 
+    if(b==1){
+
     for( i = 0; i < n; i++ ) {
         printf("Creating Process %d\n",i);
         pthread_create(&threads[i], NULL, ThreadFun,(void*)&i);
@@ -98,12 +101,11 @@ int main () {
     for(i=0; i<n; i++)
         pthread_join(threads[i],NULL);
     }
-    ***/
+        }
     if(a!=1)
     {
-        printf("Error while allocating the map");
+        printf("Error while allocating the map\n");
     }
     
-
-}
+printf("PROGRAM TERMINATED SUCCESSFULLY");
 }
