@@ -94,7 +94,6 @@ int main () {
     if(b==1){
 
     for( i = 0; i < n; i++ ) {
-        printf("Creating Process %d\n",i);
         pthread_create(&threads[i], NULL, ThreadFun,(void*)&i);
         
         }
